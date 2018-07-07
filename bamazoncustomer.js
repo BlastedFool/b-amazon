@@ -52,7 +52,7 @@ function start(){
         ]).then(function(ans){
           var whatToBuy = (ans.id)-1;
           var quantityBuy = parseInt(ans.qty);
-          var grandTotal = parseFloat(((res[whatToBuy].Price)*quantityBuy).toFixed(2));
+          var gTotal = parseFloat(((res[whatToBuy].Price)*quantityBuy).toFixed(2));
           //check if quantity is sufficient
 
       if(res[whatToBuy].StockQuantity >= quantityBuy){
@@ -63,7 +63,7 @@ function start(){
         {ItemID: ans.id}
         ], function(err, result){
             if(err) throw err;
-            console.log("Success! Your total is $" + grandTotal.toFixed(2) + ". Your item(s) will be shipped to you in 3-5 business days.");
+            console.log("Success! Your total is $" + gTotal.toFixed(2) + ". Your item(s) will be shipped to you in 3-5 business days.");
         });
         connection.query("SELECT * FROM Departments", function(err, deptRes){
             if(err) throw err;
@@ -76,7 +76,7 @@ function start(){
             
             //updates totalSales in departments table
             connection.query("UPDATE Departments SET ? WHERE ?", [
-            {TotalSales: deptRes[index].TotalSales + grandTotal},
+            {TotalSales: deptRes[index].TotalSales + gTotal},
             {DepartmentName: res[whatToBuy].DepartmentName}
             ], function(err, deptRes){
                 if(err) throw err;
@@ -102,7 +102,7 @@ function start(){
       if(ans.reply){
         start();
       } else{
-        console.log("See you soon!");
+        console.log("Thank you for your business!");
       }
     });
   }
